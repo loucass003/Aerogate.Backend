@@ -26,7 +26,7 @@
                 "user": "pi", "password": "raspberry",
 
                 "mappings": {
-                    "/home/loucass003/Documents/Prog/Code/SIN/backend/**/*": "/home/pi/Documents/aerogate/backend/**/*"
+                    "/Documents/Prog/Code/SIN/aerogate/Aerogate.Backend/**/*": "/home/pi/Documents/aerogate/backend/**/*"
                 }
             }
         ]
