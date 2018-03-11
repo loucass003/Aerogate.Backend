@@ -26,35 +26,9 @@
                 "user": "pi", "password": "raspberry",
 
                 "mappings": {
-                    "/Documents/Prog/Code/SIN/aerogate/Aerogate.Backend/**/*": "/home/pi/Documents/aerogate/backend/**/*"
+                    "/home/loucass003/Documents/Prog/Code/SIN/aerogate/Aerogate.Backend/**/*": "/home/pi/Documents/aerogate/backend/**/*"
                 }
             }
         ]
     }
-    // "deploy": {
-    //     "packages": [
-    //         {
-    //             "name": "Version 2.3.4",
-    //             "description": "Package version 2.3.4",
-    //             "files": [
-    //                 "**/**"
-    //             ],
-    //             "exclude": [
-    //                 "node_modules/*"
-    //             ],
-    //             "deployOnSave": true
-    //         }
-    //     ],
-    //     "targets": [
-    //         {
-    //             "type": "sftp",
-    //             "name": "SFTP",
-    //             "description": "SFTP folder",
-    //             "dir": "/home/pi/Documents/aerogate/web/",
-    //             "host": "aerogate", "port": 22,
-    //             "user": "pi", "password": "raspberry",
-    //             "checkBeforeDeploy": true
-    //         }
-    //     ]
-    // }
 }
