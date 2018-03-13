@@ -1,11 +1,12 @@
 import http from 'http';
 import SocketIO from 'socket.io';
 import wpa_cli from 'wireless-tools/wpa_cli'
+import wpa_supplicant from 'wireless-tools/wpa_supplicant'
 
 const server = http.Server();
 const io = new SocketIO(server);
 const port = process.env.PORT || 3000;
-const wlinterface = process.env.INTERFACE || 'wlxacf1df10c421';
+const wlinterface = process.env.INTERFACE || 'wlx3c33005e6271';
 
 let inter = 20;
 let ext = 9;
@@ -17,10 +18,28 @@ io.on('connection', (socket) => {
     socket.on('refresh_networks', () => {
         wpa_cli.scan(wlinterface, () => {
             wpa_cli.scan_results(wlinterface, (err, data) => {
-                socket.emit("wifi_list", { data });
+                wpa_cli.status(wlinterface, function(err, status) {
+                    console.dir(status);
+                    data.filter(({ bssid }) => bssid == status.bssid)
+                        .map(n => n.connected = true);
+                    socket.emit("wifi_list", { data });
+                });
             });
         });
-    })
+    });
+
+    socket.on('choose_network', (ssid, password) => {
+        console.log("TRY TO CONNECT !", ssid, password);
+        const options = {
+            interface: wlinterface,
+            ssid,
+            passphrase: password,
+            driver: 'wext'
+        };
+        wpa_supplicant.enable(options, (err) => {
+            console.log("OK !");
+        });
+    });
 });
 
 function random(min, max) {
