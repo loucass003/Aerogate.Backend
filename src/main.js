@@ -1,7 +1,7 @@
 import http from 'http';
 import SocketIO from 'socket.io';
 import wpa_cli from 'wireless-tools/wpa_cli'
-import wpa_supplicant from 'wireless-tools/wpa_supplicant'
+import { connectTo, check } from './wifi_tools';
 
 const server = http.Server();
 const io = new SocketIO(server);
@@ -30,14 +30,20 @@ io.on('connection', (socket) => {
 
     socket.on('choose_network', (ssid, password) => {
         console.log("TRY TO CONNECT !", ssid, password);
-        const options = {
-            interface: wlinterface,
-            ssid,
-            passphrase: password,
-            driver: 'wext'
-        };
-        wpa_supplicant.enable(options, (err) => {
-            console.log("OK !");
+        connectTo({ssid, password}, function(err) {
+            if (!err) { //Network created correctly
+              setTimeout(function () {
+                check(ssid, function (err, status) {
+                  if (!err && status.connected) {
+                    console.log('Connected to the network ' + ssid + '!');
+                  } else {
+                    console.log('Unable to connect to the network ' + ssid + '!');
+                  }
+                });
+              }, 2000);
+            } else {
+              console.log('Unable to create the network ' + ssid + '.');
+            }
         });
     });
 });
@@ -56,3 +62,5 @@ server.listen(port, () => {
         io.emit("temperatures", { inter, ext });
     }, 500);
 });
+
+export { wlinterface };
