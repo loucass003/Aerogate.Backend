@@ -5,7 +5,8 @@
   "dependencies": {
     "socket.io": "^2.0.4",
     "vue-socket.io": "^2.1.1-b",
-    "pi-wifi": "1.2.0"
+    "pi-wifi": "1.2.0",
+    "rpi-433": "2.1.0"
   },
   "scripts": {
     "start": "./node_modules/.bin/babel-node ./src/main.js "

@@ -228,7 +228,7 @@ function connectToId(networkId, callback) {
 */
 function checkConnection(ssid, cb) {
     var result;
-    status(function (err, status) {
+    status(wlinterface, function (err, status) {
       if (!err) {
         result = { selected: false, connected: false };
         if (status.hasOwnProperty('ssid') && status.hasOwnProperty('wpa_state')) {
