@@ -1,8 +1,7 @@
 import http from 'http';
 import SocketIO from 'socket.io';
 import wpa_cli from 'wireless-tools/wpa_cli'
-import rpi433 from 'rpi-433'
-import ConvertBase from './convertBase';
+import { Sniffer } from './radio'
 import { connectTo, check } from './wifi_tools';
 
 const server = http.Server();
@@ -10,10 +9,7 @@ const io = new SocketIO(server);
 const port = process.env.PORT || 3000;
 const wlinterface = process.env.INTERFACE || 'wlx3c33005e6271';
 
-const rfSniffer = rpi433.sniffer({
-    pin: 7,
-    debouneceDelay: 500
-});
+const rfSniffer = new Sniffer();
 
 let inter = undefined;
 let ext = undefined;
@@ -54,8 +50,8 @@ io.on('connection', (socket) => {
 });
 
 
-rfSniffer.on('data', ({ code }) => {
-    console.log(code);
+rfSniffer.on('data', ({ id, command, value : { int : value } , time }) => {
+    console.log(id, command, value, time);
 });
 
 function random(min, max) {
