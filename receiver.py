@@ -16,7 +16,7 @@ rx = vw.rx(pi, RX, BPS)
 while True:
    while rx.ready():
       print('{ "data": [' + ', '.join(str(e) for e in rx.get()) + '], "time": ' + str(round(time.time() * 1000)) + ' }')
-   time.sleep(0.5)
+   time.sleep(1)
    sys.stdout.flush()
 
 rx.cancel()
