@@ -11,9 +11,6 @@ const wlinterface = process.env.INTERFACE || 'wlx3c33005e6271';
 
 const rfSniffer = new Sniffer();
 
-let inter = undefined;
-let ext = undefined;
-
 
 io.on('connection', (socket) => {
     console.log(`Connected ${socket}`);
@@ -50,8 +47,27 @@ io.on('connection', (socket) => {
 });
 
 
-rfSniffer.on('data', ({ id, command, value : { int : value } , time }) => {
-    console.log(id, command, value, time);
+rfSniffer.on('data', ({ id, command, value: { int: value }, time }) => {
+    console.log(id, command, value);
+    let v = value == 4294967169 ? -1 : value;
+    switch(command) {
+        case 1: {
+            break;
+        }
+        case 2: {
+            console.log("emmit 2")
+            io.emit("temperatures", { ext: v });
+            break;
+        }
+        case 3: {
+            io.emit("temperatures", { inter: v });
+            break;
+        }
+        case 4: {
+            io.emit("clapet", { angle: v });
+            break;
+        }
+    }
 });
 
 function random(min, max) {
@@ -62,11 +78,11 @@ server.listen(port, () => {
     console.log('[INFO] Listening on *:' + port);
     console.log('start ticker');
 
-    setInterval(() => { //TODO: export ticker
+   /* setInterval(() => { //TODO: export ticker
         inter += inter > 19 ? random(-1, 1) * 1 : 0; 
         ext += ext > 3 ? random(-1, 1) * 1 : 1;
         io.emit("temperatures", { inter, ext });
-    }, 500);
+    }, 500);*/
 });
 
 export { wlinterface, io };

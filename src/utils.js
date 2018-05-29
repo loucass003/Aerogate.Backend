@@ -19,5 +19,5 @@ export function byteArrayToInt(buf) {
     buf.forEach((byte) => {
         string += byte
     });
-    return parseInt(string, 2).toString(10);
+    return parseInt(parseInt(string, 2).toString(10));
 }

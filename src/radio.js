@@ -20,12 +20,12 @@ export class Sniffer extends EventEmitter {
   onData(buffer) {
     const { data, time } = JSON.parse(buffer.toString('utf8'));
     const id = byteArrayToInt(getBinary(data, 0, 2));
-    const command = byteArrayToInt(getBinary(data, 2, 4));
-    const value = getBinary(data, 4, data.length)
+    const command = byteArrayToInt(getBinary(data, 2, 6));
+    const value = getBinary(data, 6, data.length);
     this.emit('data', { 
       id, 
       command, 
-      value: { binary: value, int: byteArrayToInt(value) }, 
+      value: { value, int: byteArrayToInt(value) }, 
       time 
     });
   }
